@@ -53,4 +53,5 @@ class FileStorage:
         """delete object"""
         if obj:
             keyId = obj.to_dict()['__class__'] + "." + obj.id
-            del self.all()[keyId]
+            if keyId in FileStorage.__objects:
+                del self.all()[keyId]
