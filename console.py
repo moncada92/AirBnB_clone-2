@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """ Console Module """
 import cmd
 import sys
@@ -128,9 +128,6 @@ class HBNBCommand(cmd.Cmd):
             return
 
         new_instance = HBNBCommand.classes[token[0]]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
 
         listAttr = dir(new_instance)
 
@@ -153,7 +150,9 @@ class HBNBCommand(cmd.Cmd):
                         except ValueError:
                             value_s = token2[1].replace('"', '')
                             setattr(new_instance, token2[0], value_s)
-            print(new_instance)
+            """print(new_instance)"""
+        storage.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
