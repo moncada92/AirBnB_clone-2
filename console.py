@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """ Console Module """
 import cmd
 import sys
@@ -148,7 +148,7 @@ class HBNBCommand(cmd.Cmd):
                                 setattr(new_instance, token2[0], value_f)
                             break
                         except ValueError:
-                            value_s = token2[1].replace('"', '')
+                            value_s = token2[1].replace('"', '').replace("_", " ")
                             setattr(new_instance, token2[0], value_s)
             """print(new_instance)"""
         storage.save()
