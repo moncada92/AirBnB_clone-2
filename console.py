@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import copy
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -119,27 +120,24 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """ Create an object of any class"""
         token = args.split(' ')
-
-        if not token[0]:
+        c_name = token[0]
+        if not c_name:
             print("** class name missing **")
             return
-        elif token[0] not in HBNBCommand.classes:
+        elif c_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
-        new_instance = HBNBCommand.classes[token[0]]()
-
+        new_instance = HBNBCommand.classes[c_name]()
         listAttr = dir(new_instance)
 
-        if(len(token) > 1):
+        if len(token) > 1:
             for word in token:
                 token2 = word.split('=')
                 for attr in listAttr:
                     if attr == token2[0]:
                         try:
-
                             spt = token2[1].split(".")
-
                             if len(spt) == 1:
                                 value_int = int(token2[1])
                                 setattr(new_instance, token2[0], value_int)
@@ -148,9 +146,10 @@ class HBNBCommand(cmd.Cmd):
                                 setattr(new_instance, token2[0], value_f)
                             break
                         except ValueError:
-                            value_s = token2[1].replace('"', '').replace("_", " ")
+                            value = token2[1]
+                            value_s = value.replace('"', '').replace("_", " ")
                             setattr(new_instance, token2[0], value_s)
-            """print(new_instance)"""
+        """print(new_instance)"""
         storage.save()
         print(new_instance.id)
 
