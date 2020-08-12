@@ -1,8 +1,11 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
-from models.base_model import BaseModel, Base, 
+from models.base_model import BaseModel, Base
+from models.city import City
+from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, ForeignKey
-from relationship_city import City
+from models import storage
+
 
 
 class State(BaseModel):
@@ -11,3 +14,14 @@ class State(BaseModel):
 
     name = Column(String(128), nulleable = False)
     cities = relationship("City", backref="states", cascade="all, delete")
+
+    @property
+    def cities(self):
+        """get cities with id states"""
+        cities = []
+        allCities = storage.all(City)
+
+        for city in allCities:
+            if city.id == self.id:
+                cities.append(city)
+        return cities
