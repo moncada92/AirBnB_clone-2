@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """ Doc """
-from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from models.base_model import BaseModel, Base
+from os import getenv
+from models.base_model import Base
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -19,25 +19,27 @@ class DBStorage:
 
     def __init__(self):
         """initilize"""
-        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".format(
-                            getenv("HBNB_MYSQL_USER"),
-                            getenv("HBNB_MYSQL_PWD"),
-                            getenv("HBNB_MYSQL_HOST"),
-                            getenv("HBNB_MYSQL_DB")),
-                           pool_pre_ping=True)
+        DBStorage.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}"
+                                           .format(getenv("HBNB_MYSQL_USER"),
+                                                   getenv("HBNB_MYSQL_PWD"),
+                                                   getenv("HBNB_MYSQL_HOST"),
+                                                   getenv("HBNB_MYSQL_DB")),
+                                           pool_pre_ping=True)
         if getenv('HBNB_ENV') == "test":
-            Base.metadata.drop_all(bind=self.__engine)
+            Base.metadata.drop_all(bind=DBStorage.__engine)
 
     def all(self, cls=None):
         """see all"""
         if cls:
-            o_query = self.__session.query(cls).all()
+            o_query = DBStorage.__session.query(cls).all()
             objs = {}
             for obj in o_query:
                 objs.update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+            print("objeto: {}".format(objs))
             return objs
         else:
-            o_query = self.__session.query(User, State, City, Amenity, Place, Review).all()
+            o_query = DBStorage.__session.query(User, State, City, Amenity,
+                                                Place, Review).all()
             objs = {}
             for obj in o_query:
                 objs.update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
@@ -45,7 +47,7 @@ class DBStorage:
 
     def new(self, obj):
         """ Doc """
-        self._session.add(obj)
+        self.__session.add(obj)
 
     def save(self):
         """ Doc """
@@ -59,6 +61,7 @@ class DBStorage:
     def reload(self):
         """ reload db"""
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(bind=DBStorage.__engine,
+                                       expire_on_commit=False)
         Session = scoped_session(session_factory)
-        self.__session= Session
+        DBStorage.__session = Session()

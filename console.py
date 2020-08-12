@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """ Console Module """
 import cmd
 import sys
@@ -150,7 +150,7 @@ class HBNBCommand(cmd.Cmd):
                             value_s = value.replace('"', '').replace("_", " ")
                             setattr(new_instance, token2[0], value_s)
         """print(new_instance)"""
-        storage.save()
+        new_instance.save()
         print(new_instance.id)
 
     def help_create(self):
