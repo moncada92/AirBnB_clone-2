@@ -16,6 +16,8 @@ class test_basemodel(unittest.TestCase):
         super().__init__(*args, **kwargs)
         self.name = 'BaseModel'
         self.value = BaseModel
+        self.base = self.value()
+        self.name = "testB"
 
     def setUp(self):
         """ """
@@ -47,6 +49,8 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = BaseModel(**copy)
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == 'db',
+                     "Using filestorage")
     def test_save(self):
         """ Testing save """
         i = self.value()

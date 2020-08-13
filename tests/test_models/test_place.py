@@ -6,12 +6,23 @@ from models.place import Place
 
 class test_Place(test_basemodel):
     """ """
-
     def __init__(self, *args, **kwargs):
-        """ """
+        """set up for test"""
         super().__init__(*args, **kwargs)
         self.name = "Place"
         self.value = Place
+        self.place = self.value()
+        self.place.city_id = "1234-abcd"
+        self.place.user_id = "4321-dcba"
+        self.place.name = "Death Star"
+        self.place.description = "The best place"
+        self.place.number_rooms = 1000000
+        self.place.number_bathrooms = 1
+        self.place.max_guest = 607360
+        self.place.price_by_night = 20
+        self.place.latitude = 160.0
+        self.place.longitude = 120.0
+        self.place.amenity_ids = ["9844-lksdjkl"]
 
     def test_city_id(self):
         """ """
