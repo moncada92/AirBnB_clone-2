@@ -35,7 +35,6 @@ class DBStorage:
             objs = {}
             for obj in o_query:
                 objs.update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
-            print("objeto: {}".format(objs))
             return objs
         else:
             o_query = DBStorage.__session.query(User, State, City, Amenity,

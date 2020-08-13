@@ -4,8 +4,8 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, Float, Table, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from models.amenity import Amenity
+from models.review import Review
 from os import getenv
-import models
 
 place_amenity = Table('place_amenity', Base.metadata,
                       Column("place_id", String(60),
@@ -49,16 +49,17 @@ class Place(BaseModel, Base):
             our_rv = storage.all(Review)
             revs = []
             for value in our_rv.values():
-                if self.id == place.id:
+                if self.id == value.place_id:
                     revs.append(value)
             return revs
 
         @property
         def amenities(self):
+            from models import storage
             our_am = storage.all(Amenity)
             amen = []
             for value in our_am.values():
-                if amenities_ids == amenity.ids:
+                if value.id in self.amenity_ids:
                     amen.append(value)
             return amen
 
