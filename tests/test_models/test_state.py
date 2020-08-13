@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" """
+""" Unittest for state model """
 from tests.test_models.test_base_model import test_basemodel
 from models.state import State
 
@@ -12,6 +12,7 @@ class test_state(test_basemodel):
         super().__init__(*args, **kwargs)
         self.name = "State"
         self.value = State
+        self.value.name = "Valle del Cauca"
 
     def test_name3(self):
         """ """

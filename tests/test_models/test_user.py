@@ -1,7 +1,9 @@
 #!/usr/bin/python3
-""" """
+""" Unittest for user model """
 from tests.test_models.test_base_model import test_basemodel
 from models.user import User
+import os
+from os import getenv
 
 
 class test_User(test_basemodel):
@@ -12,6 +14,10 @@ class test_User(test_basemodel):
         super().__init__(*args, **kwargs)
         self.name = "User"
         self.value = User
+        self.value.first_name = "Luis"
+        self.value.last_name = "Vargas"
+        self.value.email = "luis_vargas@hbnb.io"
+        self.value.password = "hbnb_pass"
 
     def test_first_name(self):
         """ """
