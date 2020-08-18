@@ -17,3 +17,4 @@ chown -R ubuntu:ubuntu /data
 chgrp -R ubuntu /data
 sed -i '/listen 80 default_server/a location /hbnb_static/ { alias /data/web_static/current/;}' /etc/nginx/sites-available/default
 service nginx restart
+exit 0
