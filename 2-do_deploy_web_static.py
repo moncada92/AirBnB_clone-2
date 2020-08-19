@@ -9,26 +9,41 @@ env.hosts = ['34.75.26.100', '	35.237.221.251']
 
 
 def do_deploy(archive_path):
-    """Distributes an archive to web servers"""
-    if os.path.isfile(archive_path) is False:
+    """Deploy the airbnb static
+    """
+    if not path.exists(archive_path):
         return False
-    try:
-        archive = archive_path.split('/')[-1]
-        path = '/data/web_static/releases'
-        put("{}".format(archive_path), "/tmp/{}".format(archive))
-        directory = archive.split('.')
-        run("sudo mkdir -p {}/{}/".format(path, directory[0]))
-        run("sudo tar -xzf /tmp/{} -C {}/{}/".format(archive,
-                                                     path,
-                                                     directory[0]))
-        run("sudo rm /tmp/{}".format(archive))
-        run("sudo mv {}/{}/web_static/* {}/{}/".format(path, directory[0],
-                                                       path, directory[0]))
-        run("sudo rm -rf {}/{}/web_static".format(path, directory[0]))
-        run("sudo rm -rf /data/web_static/current")
-        run("sudo ln -sf {}/{}/ /data/web_static/current".format(path,
-                                                                 directory[0]))
-        print("New version deployed!")
-        return True
-    except:
-        return False
+    ret_value = True
+    d_folder = put(archive_path, '/tmp/')
+    if d_folder.failed:
+        ret_value = False
+    archive_file = archive_path.replace(".tgz", "").replace("versions/", "")
+    d_dest = run('mkdir -p /data/web_static/releases/' + archive_file + '/')
+    if d_dest.failed:
+        ret_value = False
+    d_unpack = run('tar -xzf /tmp/' + archive_file + '.tgz' +
+                   ' -C /data/web_static/releases/' + archive_file + '/')
+    if d_unpack.failed:
+        ret_value = False
+    d_cleanfile = run('rm /tmp/' + archive_file + '.tgz')
+    if d_cleanfile.failed:
+        ret_value = False
+    d_move = run('mv /data/web_static/releases/' + archive_file +
+                 '/web_static/* /data/web_static/releases/' + archive_file +
+                 '/')
+    if d_move.failed:
+        ret_value = False
+    d_cleanfolder = run('rm -rf /data/web_static/releases/' + archive_file +
+                        '/web_static')
+    if d_cleanfolder.failed:
+        ret_value = False
+    d_removeold = run('rm -rf /data/web_static/current')
+    if d_removeold.failed:
+        ret_value = False
+    d_createnew = run('ln -sf /data/web_static/releases/' + archive_file +
+                      '/' + ' /data/web_static/current')
+    if d_createnew.failed:
+        ret_value = False
+    if ret_value:
+        print("All tasks succeeded!")
+    return ret_value
