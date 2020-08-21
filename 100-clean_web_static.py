@@ -1,12 +1,41 @@
-#!/usr/bin/env python3
-""" deploy with fabric of static files of aribnb
+#!/usr/bin/python3
+"""Fabric script deploy all the app
 """
 
 from fabric.api import *
 from os import path
+from datetime import datetime
 
-env.hosts = ['34.75.26.100', '	35.237.221.251']
+n = datetime.now()
 
+env.hosts = ['34.74.140.171', '	3.95.67.118']
+
+
+def do_pack():
+    """Packs the version"""
+
+    fn = 'versions/web_static_{}{}{}{}{}{}.tgz'\
+        .format(n.year, n.month, n.day, n.hour, n.minute, n.second)
+    local('mkdir -p versions')
+    command = local("tar -cvzf " + fn + " ./web_static/")
+    if command.succeeded:
+        return fn
+    return None
+
+def do_clean(number=0):
+    n = int(number)
+    """Deletes deprecated versiones
+    """
+    with lcd('versions'):
+        if n == 0 or n == 1:
+            local('ls -t | tail -n +2 | xargs rm -rfv')
+        else:
+            local('ls -t | tail -n +{} | xargs rm -rfv'.format(n + 1))
+    with cd('/data/web_static/releases/'):
+        if n == 0 or n == 1:
+            run('ls -t | tail -n +2 | xargs rm -rfv')
+        else:
+            run('ls -t | tail -n +{} | xargs rm -rfv'.format(n + 1))
 
 def do_deploy(archive_path):
     """Deploy the airbnb static
@@ -47,3 +76,12 @@ def do_deploy(archive_path):
     if ret_value:
         print("All tasks succeeded!")
     return ret_value
+
+
+def deploy():
+    """deploy all
+    """
+    archive_path = do_pack()
+    if archive_path is None:
+        return False
+    return do_deploy(archive_path)
