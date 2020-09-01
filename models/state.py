@@ -27,3 +27,8 @@ class State(BaseModel, Base):
                     state_cts.append(city)
 
             return state_cts
+    else:
+
+        cities = relationship("City",
+                              backref="state",
+                              cascade="all, delete-orphan")

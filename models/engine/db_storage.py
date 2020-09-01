@@ -64,3 +64,6 @@ class DBStorage:
                                        expire_on_commit=False)
         Session = scoped_session(session_factory)
         DBStorage.__session = Session()
+
+    def close(self):
+        self.__session.close()
