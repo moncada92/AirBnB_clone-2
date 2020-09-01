@@ -5,6 +5,7 @@ from models.city import City
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from os import getenv
+import models
 
 
 class State(BaseModel, Base):
@@ -13,22 +14,18 @@ class State(BaseModel, Base):
     name = Column(String(128), nullable=False)
     cities = relationship("City", backref="state", cascade="all, delete")
 
-    if getenv('HBNB_TYPE_STORAGE') != 'db':
+    if getenv('HBNB_TYPE_STORAGE') == "db":
+        cities = relationship(
+            'City',
+            cascade='all, delete-orphan',
+            backref='state',
+        )
+    else:
 
         @property
         def cities(self):
-            """ cities getter"""
-            from models import storage
-
-            our_cts = storage.all(City)
-            state_cts = []
-            for city in our_cts.values():
-                if self.id == city.id:
-                    state_cts.append(city)
-
-            return state_cts
-    else:
-
-        cities = relationship("City",
-                              backref="state",
-                              cascade="all, delete-orphan")
+            listcities = []
+            for id, city in models.storage.all(City).items():
+                if self.id == city.state_id:
+                    listcities.append(city)
+            return listcities
