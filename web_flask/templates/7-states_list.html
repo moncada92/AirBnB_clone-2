@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>HBNB</title>
 </head>
 <body>
-    <h1>HBNB</h1>
+    <h1>States</h1>
     
     <ul>
         {% for item in data|sort(attribute="name") %}
-            <li>{{item.id}} <b>{{ item.name }}</b></li>
+            <li>{{item.id}}: <b>{{ item.name }}</b></li>
         {% endfor %}
     </ul>
 </body>
