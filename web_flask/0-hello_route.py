@@ -1,4 +1,4 @@
-#!usr/bin/env python3
+#!usr/bin/python3
 """
 create first route
 """
@@ -12,6 +12,7 @@ app.url_map.strict_slashes = False
 @app.route('/')
 def start_app():
     return 'Hello HBNB!'
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port="5000")
