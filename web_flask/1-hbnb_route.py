@@ -1,20 +1,20 @@
 #!/usr/bin/python3
-"""
-create second route
-"""
+"""start flask and set a route"""
 
 from flask import Flask
 app = Flask(__name__)
 
 
 @app.route('/', strict_slashes=False)
-def start_app():
+def hello():
+    """main route return"""
     return 'Hello HBNB!'
 
 
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
-    return 'HBNB!'
+    """return in other route"""
+    return 'HBNB'
 
 
 if __name__ == '__main__':
