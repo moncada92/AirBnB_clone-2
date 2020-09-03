@@ -3,33 +3,38 @@
 create second route with variables
 """
 
-from flask import Flask, escape, render_template
+from flask import Flask, render_template
 app = Flask(__name__)
 
 
 @app.route('/', strict_slashes=False)
-def start_app():
+def hello():
+    """main route return"""
     return 'Hello HBNB!'
 
 
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
-    return 'HBNB!'
+    """return in other route"""
+    return 'HBNB'
 
 
 @app.route('/c/<var>', strict_slashes=False)
-def path(var):
-    return 'C %s' % escape(var.replace('_', ' '))
+def c(var):
+    """Returns  in c"""
+    return 'C %s' % var.replace('_', ' ')
 
 
 @app.route('/python', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
-def pyis(text="is cool"):
-    return 'Python %s' % escape(text.replace('_', ' '))
+def python(text="is cool"):
+    """Returns in python"""
+    return 'Python %s' % text.replace('_', ' ')
 
 
-@app.route('/number/<int:n>', strict_slashes=False)
-def is_num(n):
+@app.route('/number/<int:n>')
+def num(n):
+    """Returns in number"""
     return '%d is a number' % n
 
 
