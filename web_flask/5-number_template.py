@@ -3,7 +3,7 @@
 create second route with variables
 """
 
-from flask import Flask, render_template
+from flask import Flask, escape, render_template
 app = Flask(__name__)
 
 
@@ -34,7 +34,8 @@ def is_num(n):
 
 
 @app.route('/number_template/<int:n>', strict_slashes=False)
-def template_n(n):
+def number_template(n):
+    """Returns a template number"""
     return render_template('5-number.html', n=n)
 
 
