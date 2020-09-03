@@ -1,25 +1,23 @@
-#!usr/bin/env python3
+#!/usr/bin/python3
 """
 create second route with variables
 """
 
 from flask import Flask, escape
-
 app = Flask(__name__)
-app.url_map.strict_slashes = False
 
 
-@app.route('/')
+@app.route('/', strict_slashes=False)
 def start_app():
     return 'Hello HBNB!'
 
 
-@app.route('/hbnb')
+@app.route('/hbnb', strict_slashes=False)
 def hbnb():
     return 'HBNB!'
 
 
-@app.route('/c/<var>')
+@app.route('/c/<var>', strict_slashes=False)
 def path(var):
     return 'C %s' % escape(var.replace('_', ' '))
 
