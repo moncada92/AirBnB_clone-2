@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """
-create element with template html
+create second route with variables
 """
 
-from flask import Flask, escape, render_template
+from flask import Flask, render_template
 app = Flask(__name__)
 
 
