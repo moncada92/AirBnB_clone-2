@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""
-create second route with variables
-"""
+"""start flask and set a route"""
 
 from flask import Flask, render_template
 app = Flask(__name__)
