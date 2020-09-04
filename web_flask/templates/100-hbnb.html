@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8 index</title>
+    <link rel="stylesheet" href="../static/styles/4-common.css">
+    <link rel="stylesheet" href="../static/styles/3-header.css">
+    <link rel="stylesheet" href="../static/styles/3-footer.css">
+    <link rel="stylesheet" href="../static/styles/6-filters.css">
+    <link rel="stylesheet" href="../static/styles/8-places.css">
+    <link rel="icon" type="image/png" href="../static/images/favicon.png">
+</head>
+<body>
+    <header></header>
+    <div class="container">
+        <section class="filters">
+            <div class="locations">
+                <h3>States</h3>
+                <h4>&nbsp;</h4>
+                <ul class="popover">
+                    <li>
+						{% for state in states|sort(attribute="name") %}
+            				<h2>{{ state.name }}</h2>
+								<ul>
+									{% for city in state.cities|sort(attribute='name') %}
+										<li>{{ city.name }}</li>
+									{% endfor %}
+								</ul>
+            				</li>
+        				{% endfor %}
+                    </li>
+                </ul>
+            </div>
+            <div class="locations">
+                <h3>Amenities</h3>
+                <h4>&nbsp;</h4>
+                <ul class="popover">
+					{% for amenity in amenities|sort(attribute="name") %}
+                    <li>
+                        {{ amenity.name }}
+					</li>
+					{% endfor %}
+                </ul>
+            </div>
+            <button>Search</button>
+        </section>
+        <section class="places">
+            <h1>Places</h1>
+            {% for p in places|sort(attribute='name') %}
+            <div>
+                <article>
+                    <h2>{{p.name}}</h2>
+                    <div class="price_by_night">
+                        ${{p.price_by_night}}
+                    </div>
+                    <div class="information">
+                        <div class="max_guest">
+                            <div class="icon"></div>
+                            <p>{{p.max_guest}} Guests</p> 
+                        </div> 
+                        <div class="number_rooms">
+                            <div class="icon"></div>
+                            <p>{{p.number_rooms}} Bedroom</p> 
+                        </div> 
+                        <div class="number_bathrooms">
+                            <div class="icon"></div>
+                            <p>{{p.number_bathrooms}} Bathroom</p> 
+                        </div> 
+                    </div>
+                    <div class="user">
+                        <p><span>Owner:</span> {{ result[p.user_id] }}</p>
+                    </div>                       
+                     <div class="description">
+                        {{p.description|safe}}
+                    </div>
+                </article>
+            </div>
+            {% endfor %}
+        </section>
+    </div>
+    <footer>
+        Holberton School
+    </footer>
+</body>
+</html>
